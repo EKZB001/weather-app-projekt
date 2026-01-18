@@ -16,6 +16,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  color: #333;
 }
 
 .weather-info {
@@ -31,6 +32,12 @@ input {
   margin-right: 10px;
 }
 
+input::placeholder {
+  color: #fff;
+  opacity: 1;
+  font-style: italic;
+}
+
 button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -42,4 +49,39 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+/* Styl dla przycisku powrotu */
+.back-btn {
+  background-color: #6c757d;
+  margin-bottom: 20px;
+}
+
+/* Kontener na listę prognoz */
+.forecast-list {
+  display: flex;
+  flex-direction: column;
+  /* Lista pionowa */
+  gap: 15px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+/* Pojedynczy pasek z prognozą */
+.forecast-item {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Rozsuwa elementy na boki */
+}
+
+.forecast-item .date {
+  font-weight: bold;
+  font-size: 0.9em;
+  width: 120px;
+  /* Stała szerokość daty */
 }
