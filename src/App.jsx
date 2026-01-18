@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
+
 function App() {
   // 1. STAN DLA POLA WYSZUKIWANIA
   const [city, setCity] = useState('');
@@ -10,7 +11,7 @@ function App() {
   const [weather, setWeather] = useState(null);
 
   // 3. TWÓJ KLUCZ API (Wklej go w cudzysłowie poniżej)
-  const API_KEY = 'ebf4635c7e09d2c926eabe856beee404';
+  const API_KEY = import.meta.env.VITE_API_KEY;
 
   const handleSearch = async () => {
     if (!city) return;
