@@ -1,31 +1,44 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importujemy "nawigatora"
-
-// UWAGA: Stylów nie musisz importować, jeśli są podpięte globalnie w main.jsx,
-// ale dla pewności zostawmy import CSS, jeśli używasz App.css
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { fetchWeather } from './apiMock';
 import './App.css';
 
 function Home() {
     const [city, setCity] = useState('');
     const [weather, setWeather] = useState(null);
-    const navigate = useNavigate(); // To jest nasz "pilot" do zmiany stron
+    const [favorites, setFavorites] = useState([]); // Lista ulubionych miast
+    const navigate = useNavigate();
 
-    // 1. POBIERANIE KLUCZA Z PLIKU .ENV (Bezpiecznie!)
+    // State for Mock API toggle
+    const [useMock, setUseMock] = useState(() => {
+        return localStorage.getItem('useMock') === 'true';
+    });
+
     const API_KEY = import.meta.env.VITE_API_KEY;
 
-    const handleSearch = async () => {
-        if (!city) return;
+    // Save mock preference
+    useEffect(() => {
+        localStorage.setItem('useMock', useMock);
+    }, [useMock]);
 
-        // --- MIEJSCE NA TWOJE MOCKOWANIE (jeśli chcesz punkty dodatkowe) ---
-        // const USE_MOCK = false; 
-        // ... tu byłaby logika mockowania ...
+    // 1. WCZYTANIE ULUBIONYCH PRZY STARCIE (Tylko raz)
+    useEffect(() => {
+        const savedCities = localStorage.getItem('favorites');
+        if (savedCities) {
+            setFavorites(JSON.parse(savedCities)); // Zamieniamy tekst z powrotem na tablicę
+        }
+    }, []);
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=pl&appid=${API_KEY}`;
+    // Funkcja pomocnicza do szukania (żeby nie powtarzać kodu)
+    const searchCity = async (cityName) => {
+        if (!cityName) return;
+
+        // Aktualizujemy input, żeby użytkownik widział co kliknął
+        setCity(cityName);
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error("Nie znaleziono miasta lub błąd klucza");
-            const data = await response.json();
+            // Używamy naszego wrappera apiMock
+            const data = await fetchWeather(cityName, API_KEY, useMock);
             setWeather(data);
         } catch (error) {
             alert(error.message);
@@ -33,17 +46,44 @@ function Home() {
         }
     }
 
-    // Funkcja przenosząca do szczegółów
-    const goToDetails = () => {
-        if (weather) {
-            // Mówimy: "Zmień adres na /details/NazwaMiasta"
-            navigate(`/details/${weather.name}`);
+    // Obsługa przycisku "Szukaj"
+    const handleSearch = () => {
+        searchCity(city);
+    }
+
+
+    // 2. DODAWANIE DO ULUBIONYCH + ZAPIS DO LOCALSTORAGE
+    const addToFavorites = () => {
+        if (weather && !favorites.includes(weather.name)) {
+            const newFavorites = [...favorites, weather.name];
+            setFavorites(newFavorites);
+            // Zapisujemy w przeglądarce (localStorage przyjmuje tylko tekst, stąd JSON.stringify)
+            localStorage.setItem('favorites', JSON.stringify(newFavorites));
         }
+    }
+
+    // 3. USUWANIE Z ULUBIONYCH
+    const removeFromFavorites = (cityToRemove) => {
+        const newFavorites = favorites.filter(c => c !== cityToRemove);
+        setFavorites(newFavorites);
+        localStorage.setItem('favorites', JSON.stringify(newFavorites));
     }
 
     return (
         <div className="container">
             <h1>Aplikacja Pogodowa 🌤️</h1>
+
+            {/* Toggle dla trybu MOCK (dla celów demonstracyjnych) */}
+            <div className="mock-toggle">
+                <label style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    <input
+                        type="checkbox"
+                        checked={useMock}
+                        onChange={(e) => setUseMock(e.target.checked)}
+                    />
+                    {' '}Tryb Demo (Mock API)
+                </label>
+            </div>
 
             <div className="search-box">
                 <input
@@ -55,20 +95,44 @@ function Home() {
                 <button onClick={handleSearch}>Szukaj</button>
             </div>
 
+            {/* 4. LISTA ULUBIONYCH (WYŚWIETLANIE) */}
+            {favorites.length > 0 && (
+                <div className="favorites-section">
+                    <h3>Ulubione:</h3>
+                    <div className="favorites-list">
+                        {favorites.map((favCity) => (
+                            <div key={favCity} className="fav-chip">
+                                {/* Kliknięcie nazwy wyszukuje pogodę */}
+                                <span onClick={() => searchCity(favCity)}>{favCity}</span>
+                                {/* Kliknięcie X usuwa z listy */}
+                                <button className="remove-btn" onClick={() => removeFromFavorites(favCity)}>x</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {weather && (
                 <div className="weather-info">
                     <h2>{weather.name}, {weather.sys.country}</h2>
                     <p className="temp">{Math.round(weather.main.temp)}°C</p>
                     <p className="description">{weather.weather[0].description}</p>
 
-                    {/* Przycisk pojawia się tylko, gdy mamy dane */}
-                    <button
-                        className="details-btn"
-                        style={{ marginTop: '15px', backgroundColor: '#28a745' }}
-                        onClick={goToDetails}
-                    >
-                        Prognoza 5-dniowa
-                    </button>
+                    <div className="actions">
+                        <button
+                            className="details-btn"
+                            onClick={() => navigate(`/details/${weather.name}`)}
+                        >
+                            Prognoza 5-dniowa
+                        </button>
+
+                        {/* Przycisk dodawania (pokaż tylko jeśli miasta nie ma jeszcze na liście) */}
+                        {!favorites.includes(weather.name) && (
+                            <button className="fav-btn" onClick={addToFavorites}>
+                                ❤️ Dodaj do ulubionych
+                            </button>
+                        )}
+                    </div>
                 </div>
             )}
         </div>
