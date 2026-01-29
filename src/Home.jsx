@@ -9,14 +9,14 @@ function Home() {
     const [favorites, setFavorites] = useState([]); // Lista ulubionych miast
     const navigate = useNavigate();
 
-    // State for Mock API toggle
+    // Stan przełącznika Mock API
     const [useMock, setUseMock] = useState(() => {
         return localStorage.getItem('useMock') === 'true';
     });
 
     const API_KEY = import.meta.env.VITE_API_KEY;
 
-    // Save mock preference
+    // Zapis preferencji mocka
     useEffect(() => {
         localStorage.setItem('useMock', useMock);
     }, [useMock]);

@@ -1,5 +1,5 @@
 
-// Mock danych dla celów testowych/edukacyjnych
+// Mock danych dla celów testowych
 // Ten plik symuluje odpowiedzi z API OpenWeatherMap
 
 const MOCK_DELAY = 500; // Symulacja opóźnienia sieci
@@ -83,7 +83,7 @@ export const fetchForecast = async (city, apiKey, useMock = false) => {
                 // Dla uproszczenia zwracamy zawsze to samo miasto w mocku lub zmodyfikowane
                 const data = mockForecast[city] || mockForecast["Warszawa"];
                 // Nadpisujemy nazwę miasta w mocku, żeby pasowało do zapytania
-                // (nie jest to idealne, ale wystarczy do demo)
+                // (nie jest to idealne, ale wystarczy do testów)
                 const dataCopy = JSON.parse(JSON.stringify(data));
                 dataCopy.city.name = city;
                 resolve(dataCopy);

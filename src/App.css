@@ -7,7 +7,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Center vertically as well */
+  /* Wyśrodkowanie w pionie */
   min-height: 100vh;
   color: #fff;
 }
@@ -18,7 +18,7 @@ body {
   -webkit-backdrop-filter: blur(12px);
   width: 90%;
   max-width: 500px;
-  /* Slightly narrower for a mobile-app feel */
+  /* Nieco węższy, aby przypominał aplikację mobilną */
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -133,7 +133,7 @@ button:active {
 
 .fav-btn {
   background: #f1c40f;
-  /* Keep yellow for favorites */
+  /* Zostawiamy żółty dla ulubionych */
   color: #333;
   box-shadow: 0 4px 15px rgba(241, 196, 15, 0.4);
 }
@@ -198,7 +198,7 @@ button:active {
   transform: none;
 }
 
-/* FORECAST LIST inside Details */
+/* Lista prognoz w szczegółach */
 .back-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.3);

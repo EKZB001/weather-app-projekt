@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Home';
-import Details from './Details'; // Importujemy nowy plik
+import Details from './Details';
 import './App.css';
 
 function App() {

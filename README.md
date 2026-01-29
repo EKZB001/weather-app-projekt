@@ -71,7 +71,7 @@ Projekt realizuje punkty z arkusza oceny w następujący sposób:
 *   **Estetyka**: Zastosowano styl Glassmorphism.
 
 ### 6. Publikacja
-*   Projekt jest przygotowany do publikacji na serwerze (np. Netlify Drop) poprzez folder `dist`.
+*   **Strona została opublikowana na publiczny serwer Netlify pod adresem:** https://eryk-open-weather.netlify.app/
 
 ## 📂 Struktura Plików
 *   `src/App.jsx` – główny komponent i konfiguracja routingu.
