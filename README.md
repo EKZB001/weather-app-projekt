@@ -36,9 +36,7 @@ Aplikacja pozwala użytkownikom na szybkie wyszukiwanie informacji pogodowych. D
 *   **CSS3** – stylowanie (Flexbox, Glassmorphism, RWD).
 *   **OpenWeatherMap API** / **Mock API** – źródło danych.
 
-## ✅ Realizacja Kryteriów Oceny (Wariant 1)
-
-Projekt realizuje punkty z arkusza oceny w następujący sposób:
+## ✅ Realizacja Kryteriów
 
 ### 1. Warstwa Funkcjonalna (Wymagania)
 **Wymagania Funkcjonalne:**
@@ -53,7 +51,7 @@ Projekt realizuje punkty z arkusza oceny w następujący sposób:
 
 ### 2. Komunikacja z API (REST)
 *   Aplikacja łączy się z zewnętrznym API (np. OpenWeatherMap).
-*   **[DODATKOWE PUNKTY] Mockowanie API**: Zaimplementowano tryb demo (`apiMock.js`), który symuluje odpowiedzi serwera, umożliwiając testowanie aplikacji bez dostępu do Internetu (lub w przypadku limitu zapytań API).
+*   Zaimplementowano tryb demo (`apiMock.js`), który symuluje odpowiedzi serwera, umożliwiając testowanie aplikacji bez dostępu do Internetu (lub w przypadku limitu zapytań API).
 
 ### 3. Trwałość Danych (Persistence)
 *   Wykorzystano **LocalStorage** do zapisywania listy ulubionych miast. Dane nie znikają po odświeżeniu strony.
